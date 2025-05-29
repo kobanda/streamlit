@@ -44,7 +44,6 @@ st.write(df_plot_pie)
 pie = px.pie(data_frame=df_plot_pie,
              template="seaborn",
              values="Count of Passengers",
-             title="Count of Passengers that survived",
-             names="Survived"
+             title="Count of Passengers that survived"
              )
 st.plotly_chart(pie)
