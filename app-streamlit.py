@@ -40,10 +40,19 @@ plot = px.histogram(data_frame=df_plot,
 df_plot_pie= df_plot.loc[:,['PassengerId','Survived']].groupby(['Survived']).count()
 
 df_plot_pie.rename({'PassengerId':'Count of Passengers'},inplace=True,axis='columns')
-st.write(df_plot_pie)
 pie = px.pie(data_frame=df_plot_pie,
              template="seaborn",
              values="Count of Passengers",
-             title="Count of Passengers that survived"
+             title="Count of Passengers that survived",
              )
-st.plotly_chart(pie)
+col2.plotly_chart(pie)
+#add boxplot of fare prices
+box = px.box(data_frame=df_plot,
+             template="seaborn",
+             y='Fare',
+             title="Distribution of survival accross fair prices",
+             color="Survived",
+             x="Survived"
+             )
+#attach to dashboard
+(st.plotly_chart(box))
