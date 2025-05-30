@@ -1,6 +1,5 @@
 import streamlit as st
-from requests import options
-from select import select
+
 
 st.title("Streamlit text Widget Lesson")
 col1,col2 = st.columns([1,1])
