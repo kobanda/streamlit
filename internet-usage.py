@@ -2,7 +2,7 @@
 #lets start by importing modules
 import pandas as pd
 import streamlit as st
-import plotly_express as px
+import plotly.express as px
 from streamlit import title
 
 #confiture wide layout for the dashboard and write a title for the pro
