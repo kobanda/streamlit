@@ -549,7 +549,7 @@ with tab4:
     # Fit the regression model
     model = sm.OLS(y, X).fit()
     # Get summary
-    st.markdown("##### Regression Results: Factors Influencing AI Usage")
+    st.markdown("##### Regression Results Factors Influencing AI Usage")
     st.text(model.summary())
 
     st.markdown("##### Better visual represetion of regression from excel output")
