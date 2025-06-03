@@ -3,7 +3,7 @@ from pickle import FALSE
 import pandas as pd
 import numpy as np
 import streamlit as st
-import plotly_express as px
+import plotly.express as px
 import statsmodels.api as sm
 
 #make a dashboard and make the page wide config
