@@ -8,7 +8,7 @@ import statsmodels.api as sm
 
 #make a dashboard and make the page wide config
 st.set_page_config(layout='wide')
-st.header("Impact of the AI on Inventory")
+st.markdown("### The Impact of Artificial Intelligence on Inventory Management and Cost Efficiency")
 
 #bring in the data
 df = pd.read_csv("intelligence.csv")
@@ -552,6 +552,8 @@ with tab4:
     st.subheader("🔍 Regression Results: Factors Influencing AI Satisfaction")
     st.text(model.summary())
 
+    st.markdown("### Better visual represetion of regression from excel output")
+    st.image('pic.png')
     # Show coefficients separately
     st.write("### Coefficient Table")
     st.dataframe(model.params.rename("Coefficient").to_frame())
