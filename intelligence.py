@@ -1,11 +1,13 @@
+from pickle import FALSE
+
 import pandas as pd
 import numpy as np
 import streamlit as st
 import plotly_express as px
-from streamlit import set_page_config
+import statsmodels.api as sm
 
 #make a dashboard and make the page wide config
-set_page_config(layout='wide')
+st.set_page_config(layout='wide')
 st.header("Impact of the AI on Inventory")
 
 #bring in the data
@@ -66,7 +68,7 @@ df.rename(columns=new_column_names, inplace=True)
 
 #repace the missing data with NaN
 df.replace(['', ' ', 'NA', 'N/A', 'None', 'Missing', 'nan'], np.nan, inplace=True)
-st.write(df.head())
+#st.write(df.head())
 #code the data
 # company size
 company_size_map = {
@@ -325,9 +327,6 @@ ai_confidence_map = {
 df['ai_confidence_code'] = df['ai_confidence'].map(ai_confidence_map)
 # Define mapping for post-AI inventory turnover ratio
 
-for col in df:
-    st.write(col)
-
 # columns for analysis
 cols_to_select = [
     'company_size_code',
@@ -360,34 +359,199 @@ cols_to_select = [
     'ai_satisfaction_code',
     'ai_confidence_code'
 ]
-st.subheader('After implementing AI,  what is your current average inventory turnover ratio?')
-#st.write(df[cols_to_select])
-#lets see graph of stockouts
-col1,col2 = st.columns(2)
-plot_bar = px.bar(data_frame=df,
-                   x='pre_ai_stockouts',
-                   y='pre_stockouts_code',
-                   title = 'Stockouts Before AI'
-                   )
-plot_bar2 = px.bar(data_frame=df,
-                   x='post_ai_stockouts',
-                   y='post_stockouts_code',
-                   title = 'Stockouts After AI'
-                   )
-col3,col4 = st.columns(2)
-plot_bar3 = px.bar(data_frame=df,
-                   x='pre_ai_turnover_ratio',
-                   y='pre_turnover_code',
-                   title = 'Inventory Before AI'
-                   )
-plot_bar4 = px.bar(data_frame=df,
-                   x='post_ai_turnover_ratio',
-                   y='post_turnover_code',
-                   title = 'Inventory After AI'
-                   )
-#show the graph
-col1.plotly_chart(plot_bar)
-col2.plotly_chart(plot_bar2)
-col1.plotly_chart(plot_bar3)
-col2.plotly_chart(plot_bar4)
+tab1,tab2,tab3,tab4 = st.tabs(["Data","Averages, Graphs and Descriptive","Correlation of varaibles","Regression Analysis"])
+with tab2:
+    st.subheader("Average of the variables Before and After Usage")
+    #df[cols_to_select]
+    # Metrics
+    colA,colB,colC,colD,colE = st.columns(5)
+    #average labour Before AI
+    labourB = df.pre_labor_cost_code.mean()
+    #average delay Before AI
+    delayB= df.pre_delayed_orders_code.mean()
+    #average turnover Before AI
+    turnoverB = df.pre_turnover_code.mean()
+    #average logistics Before AI
+    logisticsB = df.pre_ai_logistics_cost_code.mean()
+    #average stockout Before AI
+    df_filtered = df[df['pre_stockouts_code'] != 99]
+    stockoutB = df_filtered.pre_stockouts_code.mean()
+    #after AI
+    #average labour Before AI
+    labourA = df.post_labor_cost_code.mean()
+    #average delay Before AI
+    delayA= df.post_delayed_orders_code.mean()
+    #average turnover Before AI
+    turnoverA = df.post_turnover_code.mean()
+    #average logistics Before AI
+    logisticsA = df.post_ai_logistics_cost_code.mean()
+    #average stockout Before AI
+    stockoutA = df.post_stockouts_code.mean()
+    #metrics
+    #labour
+    colA.metric(label='Labour Before AI',value=round(labourB,2))
+    colA.metric(label='Labour Afrer AI',value=round(labourA,2))
+    #delay
+    colB.metric(label='Delay Before AI',value=round(delayB,2))
+    colB.metric(label='Delay Afrer AI',value=round(delayA,2))
+    #turnover
+    colC.metric(label='Turnover Before AI',value=round(turnoverB,2))
+    colC.metric(label='Turnover Afrer AI',value=round(turnoverA,2))
+    #logisitics
+    colD.metric(label='Logistics Before AI',value=round(logisticsB,2))
+    colD.metric(label='Logistics Afrer AI',value=round(logisticsA,2))
+    #stockout
+    colE.metric(label='Stockout Before AI',value=round(stockoutB,2))
+    colE.metric(label='Stockout Afrer AI',value=round(stockoutA,2))
 
+    #run Desriptive statiistics
+    st.subheader("This is the Descriptive statistics on the data")
+    st.write(df_filtered[cols_to_select].describe())
+    st.markdown(
+        "<h3 style='text-align: center; text-decoration: underline;'>Before implementing AI, After Implementing AI graphical analysis of different variables</h3>",
+        unsafe_allow_html=True
+    )
+    #st.write(df[cols_to_select])
+    #lets see graph of stockouts
+    col1,col2 = st.columns(2)
+    plot_bar = px.bar(data_frame=df_filtered,
+                       x='pre_ai_stockouts',
+                       y='pre_stockouts_code',
+                       title = 'Stockouts Before AI'
+                       )
+    plot_bar2 = px.bar(data_frame=df_filtered,
+                       x='post_ai_stockouts',
+                       y='post_stockouts_code',
+                       title = 'Stockouts After AI'
+                       )
+    col3,col4 = st.columns(2)
+    plot_bar3 = px.bar(data_frame=df_filtered,
+                       x='pre_ai_turnover_ratio',
+                       y='pre_turnover_code',
+                       title = 'Inventory Before AI'
+                       )
+    plot_bar4 = px.bar(data_frame=df_filtered,
+                       x='post_ai_turnover_ratio',
+                       y='post_turnover_code',
+                       title = 'Inventory After AI'
+                       )
+    col5,col6 = st.columns(2)
+    plot_bar5 = px.bar(data_frame=df_filtered,
+                       x='pre_ai_labor_cost',
+                       y='pre_labor_cost_code',
+                       title = 'Monthly cost of labor in inventory operations Before AI'
+                       )
+    plot_bar6 = px.bar(data_frame=df_filtered,
+                       x='post_ai_labor_cost',
+                       y='post_labor_cost_code',
+                       title = 'Monthly cost of labor in inventory operations After AI'
+                       )
+    col7,col8 = st.columns(2)
+    plot_bar7 = px.bar(data_frame=df_filtered,
+                       x='pre_ai_logistics_cost',
+                       y='pre_ai_logistics_cost_code',
+                       title = 'Monthly logistics and transportation cost Before AI'
+                       )
+    plot_bar8 = px.bar(data_frame=df_filtered,
+                       x='post_ai_logistics_cost',
+                       y='post_ai_logistics_cost_code',
+                       title = 'Monthly logistics and transportation cost After AI'
+                       )
+    col9,col10 = st.columns(2)
+    plot_bar9 = px.bar(data_frame=df_filtered,
+                       x='pre_ai_delayed_orders',
+                       y='pre_delayed_orders_code',
+                       title = 'Frequency of delayed order fulfilment Before AI'
+                       )
+    plot_bar10 = px.bar(data_frame=df_filtered,
+                       x='post_ai_delayed_orders',
+                       y='post_delayed_orders_code',
+                       title = 'Frequency of delayed order fulfilment After AI'
+                       )
+    #show the graph
+    col1.plotly_chart(plot_bar)
+    col2.plotly_chart(plot_bar2)
+    col3.plotly_chart(plot_bar3)
+    col4.plotly_chart(plot_bar4)
+    col5.plotly_chart(plot_bar5)
+    col6.plotly_chart(plot_bar6)
+    col7.plotly_chart(plot_bar7)
+    col8.plotly_chart(plot_bar8)
+    col9.plotly_chart(plot_bar9)
+    col10.plotly_chart(plot_bar10)
+with tab1:
+    st.write(df)
+with tab3:
+    st.subheader("Below is the correlation between the Pre and Post AI usage on variables")
+    #correlation between varaibles
+    #pre and post labour
+    correlation_turnover = round(df['pre_turnover_code'].corr(df['post_turnover_code']),3)
+    correlation_labour = round(df['pre_labor_cost_code'].corr(df['post_labor_cost_code']), 3)
+    correlation_stockouts = round(df_filtered['pre_stockouts_code'].corr(df_filtered['post_stockouts_code']), 3)
+    correlation_delayed = round(df['pre_delayed_orders_code'].corr(df['post_delayed_orders_code']), 3)
+    correlation_logistics = round(df['pre_ai_logistics_cost_code'].corr(df['post_ai_logistics_cost_code']), 3)
+    #metrics
+    corr1,corr2,corr3,corr4,corr5 = st.columns(5)
+    corr1.metric(label='Pre&Post Turnover',value=correlation_turnover)
+    corr2.metric(label='Pre&Post Labour',value=correlation_labour)
+    corr3.metric(label='Pre&Post Stockouts',value=correlation_stockouts)
+    corr4.metric(label='Pre&Post Delayed',value=correlation_delayed)
+    corr5.metric(label='Pre&Post Logistics',value=correlation_logistics)
+    # Select only the columns of interest
+    columns_of_interest = [
+        'pre_turnover_code',
+        'pre_stockouts_code',
+        'pre_labor_cost_code',
+        'pre_ai_logistics_cost_code',
+        'pre_delayed_orders_code',
+        'post_turnover_code',
+        'post_stockouts_code',
+        'post_labor_cost_code',
+        'post_ai_logistics_cost_code',
+        'post_delayed_orders_code'
+    ]
+
+    # Calculate correlation matrix
+    correlation_matrix = df[columns_of_interest].corr()
+#st.dataframe( correlation_matrix.style.background_gradient(cmap='coolwarm', axis=None).format("{:.2f}"))
+    #st.write(correlation_matrix.style.background_gradient(cmap='coolwarm'))
+    #st.write(correlation_matrix.style.background_gradient(cmap='coolwarm').format("{:.2f}"))
+    # Plotly heatmap
+    fig = px.imshow(
+        correlation_matrix,
+        text_auto=".2f",
+        color_continuous_scale="RdBu",
+        title="Correlation Matrix: Pre vs Post AI Variables",
+        aspect="auto"
+    )
+    st.plotly_chart(fig)
+with tab4:
+    # Independent variables
+    columns_of_interest = [
+        'pre_turnover_code',
+        'pre_stockouts_code',
+        'pre_labor_cost_code',
+        'pre_ai_logistics_cost_code',
+        'pre_delayed_orders_code',
+        'post_turnover_code',
+        'post_stockouts_code',
+        'post_labor_cost_code',
+        'post_ai_logistics_cost_code',
+        'post_delayed_orders_code'
+    ]
+    regress = df[columns_of_interest].fillna(0)
+    X=regress
+    # Dependent variable
+    y = df['ai_satisfaction_code']
+
+    # Add constant term for intercept
+    X = sm.add_constant(X)
+    # Fit the regression model
+    model = sm.OLS(y, X).fit()
+    # Get summary
+    st.subheader("🔍 Regression Results: Factors Influencing AI Satisfaction")
+    st.text(model.summary())
+
+    # Show coefficients separately
+    st.write("### Coefficient Table")
+    st.dataframe(model.params.rename("Coefficient").to_frame())
