@@ -361,7 +361,7 @@ cols_to_select = [
 ]
 tab1,tab2,tab3,tab4 = st.tabs(["Data","Averages, Graphs and Descriptive","Correlation of varaibles","Regression Analysis"])
 with tab2:
-    st.subheader("Average of the variables Before and After Usage")
+    st.markdown("##### Average of the variables Before and After Usage")
     #df[cols_to_select]
     # Metrics
     colA,colB,colC,colD,colE = st.columns(5)
@@ -405,7 +405,7 @@ with tab2:
     colE.metric(label='Stockout Afrer AI',value=round(stockoutA,2))
 
     #run Desriptive statiistics
-    st.subheader("This is the Descriptive statistics on the data")
+    st.markdown("##### This is the Descriptive statistics on the data")
     st.write(df_filtered[cols_to_select].describe())
     st.markdown(
         "<h3 style='text-align: center; text-decoration: underline;'>Before implementing AI, After Implementing AI graphical analysis of different variables</h3>",
@@ -482,7 +482,7 @@ with tab2:
 with tab1:
     st.write(df)
 with tab3:
-    st.subheader("Below is the correlation between the Pre and Post AI usage on variables")
+    st.markdown("##### Below is the correlation between the Pre and Post AI usage on variables")
     #correlation between varaibles
     #pre and post labour
     correlation_turnover = round(df['pre_turnover_code'].corr(df['post_turnover_code']),3)
@@ -549,11 +549,11 @@ with tab4:
     # Fit the regression model
     model = sm.OLS(y, X).fit()
     # Get summary
-    st.smarkdown("###🔍 Regression Results: Factors Influencing AI Usage")
+    st.markdown("##### Regression Results: Factors Influencing AI Usage")
     st.text(model.summary())
 
-    st.markdown("### Better visual represetion of regression from excel output")
+    st.markdown("##### Better visual represetion of regression from excel output")
     st.image('pic.png')
     # Show coefficients separately
-    st.write("### Coefficient Table")
+    st.write("##### Coefficient Table")
     st.dataframe(model.params.rename("Coefficient").to_frame())
