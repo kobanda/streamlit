@@ -390,19 +390,19 @@ with tab2:
     #metrics
     #labour
     colA.metric(label='Labour Before AI',value=round(labourB,2))
-    colA.metric(label='Labour Afrer AI',value=round(labourA,2))
+    colA.metric(label='Labour After AI',value=round(labourA,2))
     #delay
     colB.metric(label='Delay Before AI',value=round(delayB,2))
-    colB.metric(label='Delay Afrer AI',value=round(delayA,2))
+    colB.metric(label='Delay After AI',value=round(delayA,2))
     #turnover
     colC.metric(label='Turnover Before AI',value=round(turnoverB,2))
-    colC.metric(label='Turnover Afrer AI',value=round(turnoverA,2))
+    colC.metric(label='Turnover After AI',value=round(turnoverA,2))
     #logisitics
     colD.metric(label='Logistics Before AI',value=round(logisticsB,2))
-    colD.metric(label='Logistics Afrer AI',value=round(logisticsA,2))
+    colD.metric(label='Logistics After AI',value=round(logisticsA,2))
     #stockout
     colE.metric(label='Stockout Before AI',value=round(stockoutB,2))
-    colE.metric(label='Stockout Afrer AI',value=round(stockoutA,2))
+    colE.metric(label='Stockout After AI',value=round(stockoutA,2))
 
     #run Desriptive statiistics
     st.markdown("##### This is the Descriptive statistics on the data")
