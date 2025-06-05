@@ -8,7 +8,6 @@ from streamlit import title
 #confiture wide layout for the dashboard and write a title for the pro
 st.set_page_config(layout="wide")
 st.header("Internet Usage In different countries")
-
 #bring in the data for analysis
 df = pd.read_csv("share-of-individuals-using-the-internet.csv")
 #i need data between the year 2000-2016
