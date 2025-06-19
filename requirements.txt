@@ -4,6 +4,3 @@ streamlit
 statsmodels
 plotly_express
 numerize
-streamlit_option_menu
-option_menu
-time
