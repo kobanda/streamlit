@@ -3,4 +3,4 @@ plotly
 streamlit
 statsmodels
 plotly_express
-numerize.numerize
+numerize
