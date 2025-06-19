@@ -1,5 +1,4 @@
 import time
-import traceback
 from logging import currentframe
 
 import streamlit as st
