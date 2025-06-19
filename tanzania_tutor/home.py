@@ -1,13 +1,13 @@
-import time
-from logging import currentframe
-
 import streamlit as st
 import pandas as pd
 import plotly_express as px
 from numerize.numerize import numerize
 import time
+import traceback
 
+from streamlit import sidebar
 from streamlit_option_menu import option_menu
+import os
 
 #from query import *
 
@@ -22,7 +22,11 @@ st.markdown(
 #result = view_all_data()
 #df=pd.DataFrame(result,columns=["policy","Expiry","Location","State","Region","Investment","Construction","BusinessType","Earthquake","Flood","Rating","ID"])
 #make a sidebar with logo
-st.sidebar.image("coeLogo.png",width=200)
+logo_path = "coeLogo.png"
+if os.path.exists(logo_path):
+    st.sidebar.image("coeLogo.png",width=200)
+else:
+    st.sidebar.warning("Logo not found")
 df=pd.read_csv("data.csv")
 #making switchers
 st.sidebar.header("Please filter")
