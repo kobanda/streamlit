@@ -5,3 +5,4 @@ statsmodels
 plotly_express
 numerize
 streamlit-option-menu
+mysql-connector-python
