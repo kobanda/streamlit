@@ -6,7 +6,7 @@ import time
 import traceback
 from streamlit_option_menu import option_menu
 import os
-from query import *
+#from query import *
 
 #set the page configuration
 st.set_page_config(page_title="Dashboard", page_icon="🌍",layout="wide")
@@ -16,8 +16,9 @@ st.markdown(
 )
 
 #fetch the data
-result = view_all_data()
-df=pd.DataFrame(result,columns=["policy","Expiry","Location","State","Region","Investment","Construction","BusinessType","Earthquake","Flood","Rating","ID"])
+#result = view_all_data()
+df=pd.read_csv('data.csv')
+#df=pd.DataFrame(result,columns=["policy","Expiry","Location","State","Region","Investment","Construction","BusinessType","Earthquake","Flood","Rating","ID"])
 #make a sidebar with logo
 logo_path = "coeLogo.png"
 if os.path.exists(logo_path):
