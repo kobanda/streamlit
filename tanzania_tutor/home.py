@@ -24,7 +24,6 @@ if os.path.exists(logo_path):
     st.sidebar.image("coeLogo.png",width=200)
 else:
     st.sidebar.warning("Logo not found")
-#df=pd.read_csv("data.csv")
 #making switchers
 st.sidebar.header("Please filter")
 
