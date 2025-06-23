@@ -12,6 +12,7 @@ file_upload= st.sidebar.file_uploader(
     label="Please upload csv or excel file here",
     type=['csv','xlsx']
 )
+
 #check whether to display dataset or not
 display_dataset = st.sidebar.checkbox(
     label="Would you like to display the uploaded dataset?"
