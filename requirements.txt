@@ -4,4 +4,5 @@ streamlit
 statsmodels
 plotly_express
 numerize
+view_all_data
 streamlit-option-menu
